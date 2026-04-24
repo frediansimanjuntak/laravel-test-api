@@ -63,16 +63,10 @@ class UserRepository
         ]);
     }
 
-    public function update($id, UserData $data)
+    public function update($id, array $data)
     {
         $user = User::findOrFail($id);
-        $user->update([
-            'name' => $data->name,
-            'email' => $data->email,
-            'password' => $data->password,
-            'role' => $data->role,
-            'is_active' => $data->is_active,
-        ]);
+        $user->update($data);
         $user->loadCount('orders');
         return $user;
     }

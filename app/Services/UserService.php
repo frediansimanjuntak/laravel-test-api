@@ -8,6 +8,7 @@ use App\Notifications\NewUserAdminNotification;
 use App\Notifications\NewUserWelcomeNotification;
 use App\DTOs\UserData;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -37,8 +38,11 @@ class UserService
     public function update(User $actor, User $target, array $data)
     {        
         $permittedData = $this->filterToPermittedFields($actor, $data);
-        $dto = UserData::fromArray($permittedData);
-        $user = $this->repo->update($target->id, $dto);
+       
+        if (!empty($permittedData['password'])) {
+            $permittedData['password'] = Hash::make($permittedData['password']);
+        }        
+        $user = $this->repo->update($target->id, $permittedData);
         
         return $user->fresh(); // Return the updated user instance
     }
