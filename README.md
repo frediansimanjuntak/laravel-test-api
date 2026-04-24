@@ -1,58 +1,217 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel RESTful API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful API built with Laravel 13 and PHP 8.2.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP >= 8.2  
+- Composer  
+- PostgreSQL  
+- Laravel 13  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Installation
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/frediansimanjuntak/laravel-test-api.git
+cd laravel-test-api
+composer install
+cp .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## Environment Configuration
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Edit `.env`:
 
-## Code of Conduct
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=laravel_rest_api
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🗄️ Database Setup
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan migrate --seed
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## ▶️ Run Application
+
+```bash
+php artisan serve
+```
+
+---
+
+## 📌 API Routes
+
+### Auth
+- POST /api/auth/login
+- POST /api/auth/logout
+
+### Users
+- GET /api/v1/users
+- POST /api/v1/users
+- GET /api/v1/users/{id}
+- PUT /api/v1/users/{id}
+- DELETE /api/v1/users/{id}
+
+---
+
+## 📄 Sample JSON
+
+### Login
+
+URL:
+```bash
+http://localhost:8000/api/auth/login
+```
+
+Request:
+```json
+{
+  "email": "john@example.com",
+  "password": "password"
+}
+```
+
+Response:
+```json
+{
+    "status": "success",
+    "message": "Request successful.",
+    "data": {
+        "token": "7|0S1kkzMMXR5BXgcsmEWtyPjeomfm8grQa5TBKZu610b862c8",
+        "user": {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com",
+            "role": "administrator",
+            "is_active": true,
+            "orders_count": 0,
+            "can_edit": true,
+            "email_verified_at": null,
+            "created_at": "2026-04-24T06:05:06+00:00",
+            "updated_at": "2026-04-24T08:34:27+00:00"
+        }
+    }
+}
+```
+
+### Get Users
+
+URL:
+```bash
+GET http://localhost:8000/api/v1/users?search=&sort_by=&sort_dir=&per_page=2&page=1
+```
+
+Request:
+```json
+{}
+```
+
+Response:
+```json
+{
+    "status": "success",
+    "message": "Request successful.",
+    "data": [
+        {
+            "id": 2,
+            "name": "Cielo McCullough DDS",
+            "email": "fcartwright@example.com",
+            "role": "administrator",
+            "is_active": true,
+            "orders_count": 10,
+            "can_edit": false,
+            "email_verified_at": "2026-04-24T05:57:46+00:00",
+            "created_at": "2026-04-24T05:57:46+00:00",
+            "updated_at": "2026-04-24T05:57:46+00:00"
+        },
+        {
+            "id": 1,
+            "name": "Alverta Von",
+            "email": "clair.boehm@example.com",
+            "role": "administrator",
+            "is_active": true,
+            "orders_count": 6,
+            "can_edit": false,
+            "email_verified_at": "2026-04-24T05:57:46+00:00",
+            "created_at": "2026-04-24T05:57:46+00:00",
+            "updated_at": "2026-04-24T05:57:46+00:00"
+        }
+    ],
+    "meta": {
+        "current_page": 1,
+        "last_page": 10,
+        "per_page": 2,
+        "total": 20,
+        "from": 1,
+        "to": 2
+    },
+    "links": {
+        "first": "http://localhost:8000/api/v1/users?per_page=2&sort_dir=asc&page=1",
+        "last": "http://localhost:8000/api/v1/users?per_page=2&sort_dir=asc&page=10",
+        "prev": null,
+        "next": "http://localhost:8000/api/v1/users?per_page=2&sort_dir=asc&page=2"
+    }
+}
+```
+
+
+### Create User
+
+URL:
+```bash
+POST http://localhost:8000/api/v1/users
+```
+
+Request:
+```json
+{
+    "name": "Thomas",
+    "email": "thomas@example.com",
+    "password": "Pass1234!",
+    "role": "user"
+    //  # defaults role: user
+}
+```
+
+Response:
+```json
+{
+    "status": "success",
+    "message": "Request successful.",
+    "data": {
+        "id": 25,
+        "name": "Thomas",
+        "email": "thomas@example.com",
+        "role": "user",
+        "is_active": true,
+        "orders_count": 0,
+        "can_edit": true,
+        "email_verified_at": null,
+        "created_at": "2026-04-24T11:25:46+00:00",
+        "updated_at": "2026-04-24T11:25:46+00:00"
+    }
+}
+```
+
+---
+
+## 📄 License
+
+MIT
